@@ -14,11 +14,13 @@ namespace AStar
         /// </summary>
         [SerializeField]
         private AStarNode _origin;
+
         /// <summary>
         ///     Node connected to origin
         /// </summary>
         [SerializeField]
         private AStarNode _target;
+
         /// <summary>
         ///     Movement cost from origin to target
         /// </summary>
@@ -70,6 +72,12 @@ namespace AStar
             }
         }
 
+        /// <summary>
+        ///     Constructor of the AStarEdge class.
+        /// </summary>
+        /// <param name="origin">Origin node.</param>
+        /// <param name="target">Target node.</param>
+        /// <param name="movementCost">Movement cost from the origin to the target nodes.</param>
         public AStarEdge(AStarNode origin, AStarNode target, float movementCost)
         {
             Origin = origin;

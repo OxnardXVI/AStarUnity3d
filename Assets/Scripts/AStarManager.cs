@@ -14,7 +14,7 @@ namespace AStar
 {
     /// <summary>
     ///     Main class of the AStar module.
-    ///     Use it for auto building waypoints in editor mode and path searching in play mode.
+    ///     Use it for auto generation waypoints in editor mode and path searching in play mode.
     /// </summary>
     [ExecuteInEditMode]
     public class AStarManager : MonoBehaviour
@@ -49,13 +49,13 @@ namespace AStar
         /// </summary>
         public bool Build;
 
-        private AStarNode[,] _nodesField;
+        private IAStarNode[,] _nodesField;
 
         [SerializeField]
         [HideInInspector]
         private AStarNode[] _nodes;
 
-        private readonly AStarNodeBuilder _nodeBuilder = new AStarNodeBuilder();
+        private readonly AStarNodeGenerator _nodeGenerator = new AStarNodeGenerator();
         private readonly AStarPathFinder _pathFinder = new AStarPathFinder();
         private bool _drawGizmos;
 
@@ -80,7 +80,7 @@ namespace AStar
         {
             CleanUpNodes();
 
-            _nodesField = _nodeBuilder.Build(NodesXCount, 
+            _nodesField = _nodeGenerator.Build(NodesXCount, 
                 NodesZCount,
                  SizeX / (NodesXCount-1),
                  SizeZ / (NodesZCount-1),
@@ -96,7 +96,7 @@ namespace AStar
         /// <param name="start">Start node</param>
         /// <param name="finish">End node</param>
         /// <returns>Array of path nodes</returns>
-        public AStarNode[] FindPath(AStarNode start, AStarNode finish)
+        public IAStarNode[] FindPath(IAStarNode start, IAStarNode finish)
         {
             return _pathFinder.FindPath(start, finish);
         }
@@ -110,7 +110,7 @@ namespace AStar
         public Vector3[] FindPath(Vector3 start, Vector3 finish)
         {
             return FindPath(FindClosestNode(start), FindClosestNode(finish)).
-                Select( t => t.transform.position).
+                Select( t => t.Position).
                 ToArray();
         }
 
@@ -119,7 +119,7 @@ namespace AStar
         /// </summary>
         /// <param name="point">Given position</param>
         /// <returns>Closest node if find otherwise - null</returns>
-        public AStarNode FindClosestNode(Vector3 point)
+        public IAStarNode FindClosestNode(Vector3 point)
         {
             return FindClosestNode(point, CheckObstacles);
         }
@@ -130,17 +130,17 @@ namespace AStar
         /// <param name="point">Given position</param>
         /// <param name="checkVisFunc">Function that checks visibility of a node from given position</param>
         /// <returns>Closest node if find otherwise - null</returns>
-        public AStarNode FindClosestNode(Vector3 point, CheckObstaclesFuncDel checkVisFunc)
+        public IAStarNode FindClosestNode(Vector3 point, CheckObstaclesFuncDel checkVisFunc)
         {
-            AStarNode closestNode = null;
+            IAStarNode closestNode = null;
             var closestNodeDist = float.MaxValue;
 
             //todo: optimize this
             for (int i = 0; i < NodesXCount * NodesZCount; i++)
             {
-                var dist = Vector3.Distance(point, _nodes[i].transform.position);
+                var dist = Vector3.Distance(point, _nodes[i].Position);
                 if (dist < closestNodeDist &&
-                    !checkVisFunc(_nodes[i].transform.position, point))
+                    !checkVisFunc(_nodes[i].Position, point))
                 {
                     closestNodeDist = dist;
                     closestNode = _nodes[i];

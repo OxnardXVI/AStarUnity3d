@@ -41,17 +41,17 @@ namespace AStar.Debug
 
             //draw start sphere
             Gizmos.color = new Color(0.2f, 0.8f, 0.2f, 0.7f);
-            Gizmos.DrawSphere(path[0].transform.position, 0.3f);
+            Gizmos.DrawSphere(path[0].Position, 0.3f);
 
             //draw finish sphere
             Gizmos.color = new Color(0.8f, 0.2f, 0.2f, 0.7f);
-            Gizmos.DrawSphere(path[path.Length - 1].transform.position, 0.3f);
+            Gizmos.DrawSphere(path[path.Length - 1].Position, 0.3f);
 
             //draw path
             Gizmos.color = Color.cyan;
             for (int i = 1; i < pathLen; i++)
             {
-                Gizmos.DrawLine(path[i-1].transform.position, path[i].transform.position);
+                Gizmos.DrawLine(path[i - 1].Position, path[i].Position);
             }
         }
 

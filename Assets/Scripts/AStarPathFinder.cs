@@ -48,13 +48,13 @@ namespace AStar
             /// <summary>
             ///     Parent node(node from which me moved to current node)
             /// </summary>
-            public AStarNode Parent { get; set; }
+            public IAStarNode Parent { get; set; }
             /// <summary>
             ///     Current node
             /// </summary>
-            public AStarNode Node { get; private set; }
+            public IAStarNode Node { get; private set; }
 
-            public PathNodeInfo(AStarNode node)
+            public PathNodeInfo(IAStarNode node)
             {
                 Node = node;
             }
@@ -62,24 +62,24 @@ namespace AStar
 
         #endregion
 
-        private Dictionary<AStarNode, PathNodeInfo> _pathNodesCache = new Dictionary<AStarNode,PathNodeInfo>();
+        private Dictionary<IAStarNode, PathNodeInfo> _pathNodesCache = new Dictionary<IAStarNode,PathNodeInfo>();
         
         /// <summary>
         ///     List of nodes that need to be checked
         /// </summary>
-        //private readonly LinkedList<AStarNode> _open = new LinkedList<AStarNode>();
+        //private readonly LinkedList<IAStarNode> _open = new LinkedList<IAStarNode>();
 
-        private readonly PriorityQueue<float, AStarNode> _open = new PriorityQueue<float, AStarNode>();
+        private readonly PriorityQueue<float, IAStarNode> _open = new PriorityQueue<float, IAStarNode>();
 
         /// <summary>
         ///     List on nodes thats have been already checked
         /// </summary>
-        private readonly HashSet<AStarNode> _closed = new HashSet<AStarNode>();
+        private readonly HashSet<IAStarNode> _closed = new HashSet<IAStarNode>();
 
         /// <summary>
         ///     Path destination node
         /// </summary>
-        private AStarNode _destNode; 
+        private IAStarNode _destNode; 
 
         /// <summary>
         ///     Finds a path from start to finish nodes.
@@ -87,7 +87,7 @@ namespace AStar
         /// <param name="start">Node from which we start</param>
         /// <param name="finish">Destination node</param>
         /// <returns>Path representing of nodes array</returns>
-        public AStarNode[] FindPath(AStarNode start, AStarNode finish)
+        public IAStarNode[] FindPath(IAStarNode start, IAStarNode finish)
         {     
             _destNode = finish;
 
@@ -99,7 +99,7 @@ namespace AStar
             _open.Enqueue(0, start);
 
             //current processing node
-            AStarNode current = null;
+            IAStarNode current = null;
 
             //for preventing infinite loop
             var maxIterCount = 10000;
@@ -131,7 +131,7 @@ namespace AStar
 
             
             //build a path from start to finish
-            var path = new List<AStarNode>();
+            var path = new List<IAStarNode>();
             path.AddRange(BuildPath(finish));
 
             return path.ToArray();
@@ -141,13 +141,13 @@ namespace AStar
         ///     Add node to visited(add to the close list remove from the open list).
         ///     Add node neighbors to the open list.
         /// </summary>
-        private void ProcessNode(AStarNode node)
+        private void ProcessNode(IAStarNode node)
         {
             //node = _open.Dequeue();
             _closed.Add(node);
 
             //var minFDistance = 99999.0f;
-            //AStarNode minFNode = null;
+            //IAStarNode minFNode = null;
 
             var pathNode = GetPathNodeInfo(node);
 
@@ -186,7 +186,7 @@ namespace AStar
                     neighborPathNode.H =/* Mathf.Abs(currNeighbor.transform.position.x - _destNode.transform.position.x) +
                                          Mathf.Abs(currNeighbor.transform.position.z - _destNode.transform.position.z);*/
                     Vector3.Distance(currNeighbor.transform.position,
-                        _destNode.transform.position);  //TODO: make optimization by comparing square distance*/
+                        _destNode.Position);  //TODO: make optimization by comparing square distance*/
 
                     //add to open queue
                     _open.Enqueue(neighborPathNode.F, currNeighbor);
@@ -195,11 +195,11 @@ namespace AStar
         }
 
         /// <summary>
-        ///     Returns node path info(used for store temporary data needed for calculating path) by given AStarNode
+        ///     Returns node path info(used for store temporary data needed for calculating path) by given IAStarNode
         /// </summary>
         /// <param name="node">Given node</param>
         /// <returns>PathNodeInfo</returns>
-        private PathNodeInfo GetPathNodeInfo(AStarNode node)
+        private PathNodeInfo GetPathNodeInfo(IAStarNode node)
         {
             if (!_pathNodesCache.ContainsKey(node))
             {
@@ -214,9 +214,9 @@ namespace AStar
         ///     Returns path from dest to start(start node's parent always equals NULL)
         /// </summary>
         /// <returns>Path from start to destination node</returns>
-        private AStarNode[] BuildPath(AStarNode destNode)
+        private IAStarNode[] BuildPath(IAStarNode destNode)
         {
-            var path = new Stack<AStarNode>();
+            var path = new Stack<IAStarNode>();
             var curr = GetPathNodeInfo(destNode);
 
             while (curr.Parent != null)
