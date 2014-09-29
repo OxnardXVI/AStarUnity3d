@@ -1,4 +1,8 @@
 AStarUnity3d
 ============
 
-AStar path searching algorithm implementation for Unity3d engine.
+An implementation of AStar searching algorithm in Unity3d engine.
+Features:
+  - Path searching;
+  - Automatic generation of waypoints;
+  - Path visualization for debugging.
