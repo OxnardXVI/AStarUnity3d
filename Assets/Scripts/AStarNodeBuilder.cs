@@ -25,7 +25,7 @@ namespace AStar
         private Vector3 _center;
         private Transform _parentTr;
 
-        public AStarNode[,] Build(int nodesXCount, 
+        public IAStarNode[,] Build(int nodesXCount, 
             int nodesZCount, 
             float nodesDistanceX,
             float nodesDistanceZ, 
@@ -41,7 +41,7 @@ namespace AStar
             _parentTr = parentTr;
 
             //create nodes
-            var nodes = new AStarNode[_nodesXCount, _nodesZCount];
+            var nodes = new IAStarNode[_nodesXCount, _nodesZCount];
             for (int i = 0; i < _nodesXCount; i++)
             {
                 for (int j = 0; j < _nodesZCount; j++)
@@ -63,7 +63,7 @@ namespace AStar
 
                     nodes[i, j].AddEdges(GetNodeNeighbors(nodes, i, j).
                         Where(t => !CheckObstacles(nodes[i, j], t)).
-                        Select(t => new AStarEdge(nodes[i, j], t, Vector3.Distance(nodes[i, j].transform.position, t.transform.position))).
+                        Select(t => new AStarEdge(nodes[i, j] as AStarNode, t as AStarNode, Vector3.Distance(nodes[i, j].Position, t.Position))).
                         ToArray());
                 }
             }
@@ -78,9 +78,9 @@ namespace AStar
                 _center.z + _nodesDistanceZ * (nodeZInd) - _nodesDistanceZ * (_nodesZCount - 1) * 0.5f);
         }
 
-        private AStarNode[] GetNodeNeighbors(AStarNode[,] nodes, int nodeXInd, int nodeZInd)
+        private IAStarNode[] GetNodeNeighbors(IAStarNode[,] nodes, int nodeXInd, int nodeZInd)
         {
-            var neighbors = new List<AStarNode>();
+            var neighbors = new List<IAStarNode>();
 
             var nodesXCount = nodes.GetLength(0);
             var nodesZCount = nodes.GetLength(1);
@@ -108,10 +108,10 @@ namespace AStar
         ///     Is there any obstacles between two given nodes.
         /// </summary>
         /// <returns>False if there no obstacles between nodes(nodes can be linked)</returns>
-        private bool CheckObstacles(AStarNode node1, AStarNode node2)
+        private bool CheckObstacles(IAStarNode node1, IAStarNode node2)
         {
-            var node1Pos = node1.transform.position;
-            var node2Pos = node2.transform.position;
+            var node1Pos = node1.Position;
+            var node2Pos = node2.Position;
             var disnace = Vector3.Distance(node1Pos, node2Pos);
 
             return Physics.Raycast(node1Pos, (node2Pos - node1Pos).normalized, disnace) ||

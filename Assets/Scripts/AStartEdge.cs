@@ -4,31 +4,10 @@ using UnityEngine;
 namespace AStar
 {
     /// <summary>
-    ///     Representing AStart edge interface. An edge connects 2 different nodes.
-    /// </summary>
-    public interface IAStarEdge
-    {
-        /// <summary>
-        ///     Origin node
-        /// </summary>
-        AStarNode Origin { get; }
-
-        /// <summary>
-        ///     Node connected to origin
-        /// </summary>
-        AStarNode Target { get; }
-
-        /// <summary>
-        ///     Movement cost from origin to target
-        /// </summary>
-        float MovementCost { get; }
-    }
-
-    /// <summary>
     ///     An edge connects 2 different nodes.
     /// </summary>
     [Serializable]
-    public class AStarEdge : IAStarEdge
+    public class AStarEdge
     {
         /// <summary>
         ///     Origin node

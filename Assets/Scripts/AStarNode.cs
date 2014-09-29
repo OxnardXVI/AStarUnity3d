@@ -21,6 +21,11 @@ namespace AStar
         IEnumerable<AStarEdge> Edges { get; }
 
         /// <summary>
+        ///     World position of the node.
+        /// </summary>
+        Vector3 Position { get; set; }
+
+        /// <summary>
         ///     Adds given node edge to the eadges list.
         /// </summary>
         /// <param name="edge">Eadge to add</param>
@@ -41,7 +46,7 @@ namespace AStar
         /// <summary>
         ///     Removes all node edges from the eadges list.
         /// </summary>
-        void RemoveAllEdges();
+        void RemoveAllEdges();  
     }
 
     public class AStarNode : MonoBehaviour, IAStarNode
@@ -63,6 +68,15 @@ namespace AStar
         public IEnumerable<AStarEdge> Edges
         {
             get { return _edges; }
+        }
+
+        /// <summary>
+        ///     World position of the node.
+        /// </summary>
+        public Vector3 Position
+        {
+            get { return transform.position; }
+            set { transform.position = value; }
         }
 
         /// <summary>
@@ -117,6 +131,6 @@ namespace AStar
             {
                 Gizmos.DrawLine(transform.position, edge.Target.transform.position);
             }
-        }   
+        }
     }
 }
