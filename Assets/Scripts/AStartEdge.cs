@@ -3,11 +3,20 @@ using UnityEngine;
 
 namespace AStar
 {
+    public interface IAStarEdge
+    {
+        AStarNode Origin { get; }
+
+        AStarNode Target { get; }
+
+        float MovementCost { get; }
+    }
+
     /// <summary>
     ///     Edge than connects 2 different nodes.
     /// </summary>
     [Serializable]
-    public class AStarEdge
+    public class AStarEdge : IAStarEdge
     {
         /// <summary>
         ///     Origin node
@@ -77,7 +86,4 @@ namespace AStar
             MovementCost = movementCost;
         }
     }
-
-
-
 }
