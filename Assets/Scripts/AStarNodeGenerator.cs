@@ -16,7 +16,7 @@ namespace AStar
     /// <summary>
     ///     Automatically generates given number of nodes within given rectangle and generates links between nodes(only if there are not obstacles between them).
     /// </summary>
-    public class AStarNodeBuilder
+    public class AStarNodeGenerator
     {
         private int _nodesXCount;
         private int _nodesZCount;
