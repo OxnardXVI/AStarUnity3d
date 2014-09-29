@@ -8,6 +8,7 @@
 //=============================================================================
  
 using System;
+using System.Collections.Generic;
 using UnityEngine;
 
 namespace AStar
@@ -87,17 +88,93 @@ namespace AStar
         }
     }
 
-    public class AStarNode : MonoBehaviour
+    public interface IAStarNode
     {
         /// <summary>
         ///     Node edges(connections)
         /// </summary>
-        public AStarEdge[] Edges = new AStarEdge[0];
+        IEnumerable<AStarEdge> Edges { get; }
+
+        /// <summary>
+        ///     Adds given node edge to the eadges list.
+        /// </summary>
+        /// <param name="edge">Eadge to add</param>
+        void AddEdge(AStarEdge edge);
+
+        /// <summary>
+        ///     Adds given node edges to the eadges list.
+        /// </summary>
+        /// <param name="edges">Eadges to add</param>
+        void AddEdges(AStarEdge[] edges);
+
+        /// <summary>
+        ///     Removes given node edge from the eadges list.
+        /// </summary>
+        /// <param name="edge">Eadge to remove</param>
+        void RemoveEdge(AStarEdge edge);
+
+        /// <summary>
+        ///     Removes all node edges from the eadges list.
+        /// </summary>
+        void RemoveAllEdges();
+    }
+
+    public class AStarNode : MonoBehaviour, IAStarNode
+    {
+        /// <summary>
+        ///     Node edges(connections)
+        /// </summary>
+        [SerializeField]
+        private List<AStarEdge> _edges = new List<AStarEdge>();
 
         /// <summary>
         ///     Should draw debug gizmos of this node and it's edges
         /// </summary>
         public bool DrawGizmos = false;
+
+        /// <summary>
+        ///     Node edges(connections)
+        /// </summary>
+        public IEnumerable<AStarEdge> Edges
+        {
+            get { return _edges; }
+        }
+
+        /// <summary>
+        ///     Adds given node edge to the eadges list.
+        /// </summary>
+        /// <param name="edge">Eadge to add</param>
+        public void AddEdge(AStarEdge edge)
+        {
+            _edges.Add(edge);
+        }
+
+        /// <summary>
+        ///     Adds given node edges to the eadges list.
+        /// </summary>
+        /// <param name="edges">Eadges to add</param>
+        public void AddEdges(AStarEdge[] edges)
+        {
+            _edges.AddRange(edges);
+        }
+
+
+        /// <summary>
+        ///     Removes given node edge from the eadges list.
+        /// </summary>
+        /// <param name="edge">Eadge to remove</param>
+        public void RemoveEdge(AStarEdge edge)
+        {
+            _edges.Remove(edge);
+        }
+
+        /// <summary>
+        ///     Removes all node edges from the eadges list.
+        /// </summary>
+        public void RemoveAllEdges()
+        {
+            _edges.Clear();
+        }
 
         private void OnDrawGizmos()
         {
@@ -115,6 +192,6 @@ namespace AStar
             {
                 Gizmos.DrawLine(transform.position, edge.Target.transform.position);
             }
-        }
+        }   
     }
 }

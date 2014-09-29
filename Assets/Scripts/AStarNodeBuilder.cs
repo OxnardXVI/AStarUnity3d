@@ -59,10 +59,12 @@ namespace AStar
             {
                 for (int j = 0; j < _nodesZCount; j++)
                 {
-                    nodes[i, j].Edges = GetNodeNeighbors(nodes, i, j).
+                    nodes[i, j].RemoveAllEdges();
+
+                    nodes[i, j].AddEdges(GetNodeNeighbors(nodes, i, j).
                         Where(t => !CheckObstacles(nodes[i, j], t)).
                         Select(t => new AStarEdge(nodes[i, j], t, Vector3.Distance(nodes[i, j].transform.position, t.transform.position))).
-                        ToArray();
+                        ToArray());
                 }
             }
 
