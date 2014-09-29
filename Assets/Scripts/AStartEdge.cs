@@ -1,4 +1,13 @@
-﻿using System;
+﻿//=============================================================================
+//  
+// module:		AStar for Unity3d
+// license:		GNU GPL
+// author:		Chernomoretc Igor
+// contacts:	oxnardxvi@gmail.com
+//
+//=============================================================================
+ 
+using System;
 using UnityEngine;
 
 namespace AStar
