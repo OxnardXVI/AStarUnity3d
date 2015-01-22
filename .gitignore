@@ -1,37 +1,30 @@
-obj
-Temp
-*.tmproj
-*.csproj
-*.unityproj
-*.sln
-*.suo
-*.user
+/Temp
+/Library
+/scr
+/Build
+/obj
+
+#Un-ignore these specific files
+!/Library/*.asset
+!/Library/AssetImportState
+!/Library/AssetVersioning.db
+!/Library/BuildPlayer.prefs
+!/Library/ScriptMapper
+!/Library/assetservercachev3
+!/Library/expandedItems
+!/Library/guidmapper
+!/Library/unity default resources
+!/Library/unity editor resources
+!/Library/metadata/
+
+#ignoring pidb, they are just code completion caching data according to:
+
+# http://stackoverflow.com/questions/1022111/what-are-monodevelops-pidb-files
+
 *.pidb
 *.userprefs
-*.userprefs
-*.licenseheader
+/*.csproj
+/*.sln
 
-Library/cache/*
-Library/metadata/*
-Library/previews/*
-Library/ScriptAssemblies/*
 
-AnnotationManager
-assetDatabase3
-AssetImportState
-assetservercachev3
-AssetServerCacheV3
-AssetVersioning.db
-AudioManager.asset
-BuildPlayer.prefs
-BuildSettings.asset
-DynamicsManager.asset
-EditorSettings.asset
-EditorUserBuildSettings.asset
-expandedItems
-FailedAssetImports.txt
-guidmapper
-InspectorExpandedItems.asset
-MonoManager.asset
-NetworkManager.asset
-ScriptMapper
+

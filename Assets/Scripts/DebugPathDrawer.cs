@@ -11,19 +11,41 @@ using UnityEngine;
 
 namespace AStar.Debug
 {
-    public class DebugDrawPath : MonoBehaviour
+    public class DebugPathDrawer : MonoBehaviour
     {
         public AStarNode Start;
         public AStarNode Finish;
         public AStarManager Manager;
+        public bool DrawOnSelected = false;
+       
 
         /// <summary>
         ///     Time in ms needed for searching path. 
         ///     Don't edit this manualy.
         /// </summary>
         public float SearchPathTimeMs;
+        /// <summary>
+        ///     Count of path nodes needed to reach the target.
+        /// </summary>
+        public int PathNodesCount = 0;
+
+        private void OnDrawGizmos()
+        {
+            if (!DrawOnSelected)
+            {
+                DrawPath();
+            }
+        }
 
         private void OnDrawGizmosSelected()
+        {
+            if (DrawOnSelected)
+            {
+                DrawPath();
+            }
+        }
+
+        private void DrawPath()
         {
             if (Start == null || Finish == null || Manager == null)
             {
@@ -31,11 +53,11 @@ namespace AStar.Debug
                 return;
             }
 
-            var currTime = Time.realtimeSinceStartup;
+            var startTime = Time.realtimeSinceStartup;
             var path = Manager.FindPath(Start, Finish);
-            UnityEngine.Debug.Log("Path nodes count: " + path.Length);
-            SearchPathTimeMs = (Time.realtimeSinceStartup - currTime) * 1000;
-
+            SearchPathTimeMs = (Time.realtimeSinceStartup - startTime)/* * 1000*/;
+            //UnityEngine.Debug.Log("Path nodes count: " + path.Length);
+            PathNodesCount = path.Length;
 
             var pathLen = path.Length;
 
